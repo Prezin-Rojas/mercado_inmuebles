@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+<main class="container py-5">
+    <div class="formulario-proyecto">
+        <h2>Crea una cuenta</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">crear cuenta</button>
+        </form>
+
+    <p>Ya tenías cuenta?? <a href="{% url 'login' %}">Entrar al sitio</a></p>
+</div>
+</main>
+{% endblock %}

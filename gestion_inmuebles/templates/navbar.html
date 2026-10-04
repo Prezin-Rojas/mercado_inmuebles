@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup"
+            aria-expanded="false"
+            aria-label="Abrir menú de navegación"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{% url 'indice' %}">Inicio</a>
+
+                {% if user.is_authenticated %}
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link btn btn-link border-0">
+                            Cerrar sesión
+                        </button>
+                    </form>
+                    <a class="nav-link" href="{% url 'dashboard' %}">
+                        Dashboard 
+                    </a>
+                {% else %}
+                    <a class="nav-link" href="{% url 'login' %}">
+                        Iniciar sesión
+                    </a>
+                    <a class="nav-link" href="{% url 'registro' %}">
+                        Registrate
+                    </a>
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

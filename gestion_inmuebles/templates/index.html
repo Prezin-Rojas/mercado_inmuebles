@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+{% load static %}
+
+<section class="bg-info-subtle py-5 flex-grow-1">
+    <div class="container">
+
+        <form method="get"
+              class="row g-2 mb-4 justify-content-center">
+              
+        <label for="region">REGIÓN</label>
+        <select class="form-select" name="region" id="region">
+            <option value="">---TODAS LAS REGIONES---</option>
+            {% for region in regiones %}
+            <option value="{{ region.id }}"> {{ region.nombre }} ({{ region.total_inmuebles }})</option>
+            {% endfor %}
+        </select>
+
+        <label for="comuna">COMUNA</label>
+        <select class="form-select" name="comuna" id="comuna">
+            <option value="">---TODAS LAS COMUNAS---</option>
+            {% for comuna in comunas %}
+            <option value="{{ comuna.id }}"> {{ comuna.nombre }} ({{ comuna.total_inmuebles }})</option>
+            {% endfor %}
+        </select>
+            
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">
+                    Buscar
+                </button>
+            </div>
+
+            {% if busqueda %}
+                <div class="col-auto">
+                    <a href="{% url 'indice' %}"
+                       class="btn btn-secondary">
+                        Limpiar
+                    </a>
+                </div>
+            {% endif %}
+        </form>
+
+        <div class="row g-4 justify-content-center">
+            {% for inmueble in inmuebles %}
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card h-100 product-card bg-success-subtle border-success">
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ inmueble.nombre }}
+                            </h5>
+
+                            <p class="card-text">
+                                {{ inmueble.descripcion }}
+                            </p>
+                            <p class="card-text">
+                                {{ inmueble.comuna }}
+                            </p>
+                            <p class="card-text">
+                                {{ inmueble.dueno }}
+                            </p>
+                        </div>
+
+                        <div class="d-flex justify-content-end align-items-center gap-2 p-3">
+                            <span class="valor2 fw-bold fs-2 text-success">
+                               $ {{ inmueble.precio_mensual }}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+                    <div class="alert alert-warning text-center">
+                        No se encontraron conicidencias.
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

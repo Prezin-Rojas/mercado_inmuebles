@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+<main class="container py-5 flex-grow-1">
+    <div class="formulario-proyecto">
+    <h2>Actualizar datos de perfil</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">LISTO!</button>
+</form>
+</div>
+</main>
+
+{% endblock %}

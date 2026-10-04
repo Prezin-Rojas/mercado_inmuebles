@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block 'content' %}
+<section class="bg-info-subtle py-5 flex-grow-1">
+    <div class="fs-5">
+        <p><strong>Usuario:</strong> {{ request.user.username }}</p>
+        <p><strong>Nombre:</strong> {{ request.user.first_name }}</p>
+        <p><strong>Apellido:</strong> {{ request.user.last_name }}</p>
+        <p><strong>Email:</strong> {{ request.user.email }}</p>
+    </div>
+
+    <p><strong>Acutalizar datos de perfil:  <a class="btn btn-success align-items-center" href="{% url 'act_perfil' %}">Clickeame!</a></p></strong>
+    <p><strong>Agregar Nuevo Inmueble: <a class="btn btn-success align-items-center" href="{%  url 'nuevo_inmueble' %}">Crear Inmueble</a></p></strong>
+
+</section>
+
+    <section class="bg-info-subtle py-5 flex-grow-1">
+    <h1 class="d-flex justify-content-center align-items-center gap-2 p-3">Mis Inmuebles</h1>
+    <div class="container">
+
+        <form method="get"
+              class="row g-2 mb-4 justify-content-center">
+
+            <div class="col-12 col-md-8 col-lg-6">
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ busqueda }}"
+                    class="form-control"
+                    placeholder="Buscar inmueble"
+                    aria-label=""
+                >
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">
+                    Buscar
+                </button>
+            </div>
+
+            {% if busqueda %}
+                <div class="col-auto">
+                    <a href="{% url 'indice' %}"
+                       class="btn btn-secondary">
+                        Limpiar
+                    </a>
+                </div>
+            {% endif %}
+        </form>
+
+        <div class="row g-4 justify-content-center">
+            {% for inmueble in inmuebles %}
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card h-100 product-card bg-success-subtle border-success">
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ inmueble.nombre }}
+                            </h5>
+
+                            <p class="card-text">
+                                {{ inmueble.descripcion }}
+                            </p>
+                            <p class="card-text">
+                                {{ inmueble.comuna }}
+                            </p>
+                            <p class="card-text">
+                                {{ inmueble.dueno }}
+                        </div>
+
+
+                        <div class="d-flex justify-content-end align-items-center gap-2 p-3">
+                            <span class="valor2 fw-bold fs-2 text-success">
+                               $ {{ inmueble.precio_mensual }}
+                            </span>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center gap-2 p-3">
+                        
+                            <a class="btn btn-success" href="{%  url 'actualizar_inmueble' inmueble.id %}">ACTUALIZAR</a>
+                            
+                        </div>
+                            <div class="d-flex justify-content-end align-items-center gap-2 p-3">
+                        
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarInmueble{{ inmueble.id }}"> ELIMINAR</button>
+
+<div
+    class="modal fade"
+    id="eliminarInmueble{{ inmueble.id }}"
+    tabindex="-1"
+    aria-labelledby="tituloEliminar{{ inmueble.id }}"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="tituloEliminar{{ inmueble.id }}">
+                    Confirmar eliminación
+                </h2>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+                ¿Seguro que deseas eliminar «{{ inmueble.nombre }}»?
+                Esta acción no se puede deshacer.
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <form method="post" action="{% url 'borrar_inmueble' inmueble.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        Sí, eliminar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+
+            {% empty %}
+
+                <div class="col-12">
+                    <div class="alert alert-warning text-center">
+                        No se encontraron conicidencias.
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
